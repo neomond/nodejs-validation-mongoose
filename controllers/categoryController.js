@@ -34,6 +34,26 @@ const categoryController = {
     category.save();
     res.json(category);
   },
+  update: (req, res) => {
+    let id = req.params.id;
+    let updatedCategory = {
+      name: req.body.name,
+      surname: req.body.surname,
+      email: req.body.email,
+      password: req.body.password,
+    };
+    Category.findByIdAndUpdate(id, updatedCategory, { new: true })
+      .then((updatedCategory) => {
+        if (updatedCategory) {
+          res.json(updatedCategory);
+        } else {
+          res.status(400).json({ msg: "Not Found!" });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json(error);
+      });
+  },
   delete: (req, res) => {
     let id = req.params.id;
     Category.findByIdAndDelete(id)
